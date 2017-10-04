@@ -1,64 +1,95 @@
 
-public class MyList_Array implements MyList {
+public class MyList_Array<T> implements MyList {
 	
 	
-	boolean add(int index, Song o){
-		(o.getSongName(), o.getArtist(), o.getPlayTime());
-	}
 	
-	boolean add(T o){
+	boolean add(int index, Song o) {
+		
+		
 		
 	}
 	
-	boolean clear(){
+	boolean add(T o) {
+		
+		
 		
 	}
 	
-	boolean contains(T o){
+	boolean clear() {
+		
+		
 		
 	}
 	
-	T get(int index){
+	boolean contains(T o) {
+		
+		
 		
 	}
 	
-	int indexOf(T o){
+	T get(int index) {
+		
+		
 		
 	}
 	
-	boolean isEmpty(){
+	int indexOf(T o) {
+		
+		
 		
 	}
 	
-	T remove(int index){
+	boolean isEmpty() {
+		
+		
 		
 	}
 	
-	T remove(T o){
+	T remove(int index) {
+		
+		
 		
 	}
 	
-	boolean set(int index, T element){
+	T remove(T o) {
+		
+		
 		
 	}
 	
-	int size(){
+	boolean set(int index, T element) {
+		
+		
 		
 	}
 	
-	MyList subList(int fromIndex, int toIndex){
+	int size() {
+		
+		
 		
 	}
 	
-	T[] toArray(){
+	MyList subList(int fromIndex, int toIndex) {
+		
+		
 		
 	}
 	
-	boolean swap(int position1, int position2){
+	T[] toArray() {
+		
+		
 		
 	}
 	
-	boolean shift(int positions){
+	boolean swap(int position1, int position2) {
+		
+		
+		
+	}
+	
+	boolean shift(int positions) {
+		
+		
 		
 	}
 	
