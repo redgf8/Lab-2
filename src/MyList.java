@@ -19,7 +19,7 @@ public interface MyList<T> {
 	
 	T remove(T o);
 	
-	boolean set(int index, T element);
+	boolean set(int index, T o);
 	
 	int size();
 	
