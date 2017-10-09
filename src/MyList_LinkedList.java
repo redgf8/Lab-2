@@ -466,7 +466,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
 			currentNode.setNext(this.getHead().getNext());
 			currentNode.setData(this.getHead().getData());
 			
-			for (int i = 0; i < this.getSize(); i++) {
+			for (int i = 0; i < (this.getSize() - 1); i++) {
 				
 				currentNode = currentNode.getNext();
 				

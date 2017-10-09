@@ -9,6 +9,8 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 		
 		this.setHead(null);
 		this.setTail(null);
+		this.getHead().setNext(this.getTail());
+		this.getTail().setNext(this.getHead());
 		
 	}
 	
@@ -26,11 +28,11 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 	
 	public void setTail(Node newTail) {
 		
-		/**if (newTail.hasNext() == true) {
+		if (newTail.hasNext() == true) {
 			
 			newTail.setNext(null);
 			
-		}**/
+		}
 
 		this.tail = newTail;
 		
@@ -56,35 +58,44 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 
 	public boolean add(int index, T o) {
 
+		System.out.println(this.getSize());
 		if (index < 1 || index > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in add method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in add method of MyList_CircularLinkedList.");
 			return false;
 			
 		} else {
 		
-			Node newNode = new Node(o);
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
-			Node nextNode = new Node(null);
-			for (int i = 0; i < index; i++) {
+			Node<T> newNode = new Node<T>(o);
+			Node<T> currentNode = new Node<T>(null);
+			currentNode.setNext(this.getHead().getNext());
+			currentNode.setData((T) this.getHead().getData());
+			this.setHead(currentNode);
+			Node<T> nextNode = new Node<T>(null);
 			
-				if (i == 0) {
-					
-					currentNode.setNext(this.getHead().getNext());
-					currentNode.setData(this.getHead().getData());
-					
-				} else {
+			if (index == 1) {
+
+				newNode.setNext(currentNode);
+				this.setHead(newNode);
+				this.setSize(this.size() + 1);
+				return true;
+				
+			} else {
+				
+				for (int i = 0; i < (index - 2); i++) {
 					
 					currentNode = currentNode.getNext();
-					
+				
 				}
-			
+				
+				nextNode = currentNode.getNext();
+				newNode.setNext(nextNode);
+				currentNode.setNext(newNode);
+				this.setSize(this.size() + 1);
+				return true;
+				
 			}
-			nextNode.setNext(currentNode.getNext());
-			currentNode.setNext(newNode);
-			newNode.setNext(nextNode.getNext());
-			return true;
-		
+			
 		}
 		
 	}
@@ -92,6 +103,7 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 	public boolean add(T o) {
 		
 		Node newNode = new Node(o);
+		
 		if (this.getHead() == null) {
 			
 			this.setHead(newNode);
@@ -100,30 +112,33 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 			
 		} else {
 			
+			newNode.setNext(this.getHead());
 			this.getTail().setNext(newNode);
 			this.setTail(newNode);
 			this.setSize((this.getSize() + 1));
 			
 		}
+		
 		return true;
 		
 	}
 
-	public boolean clear() {
+	public boolean clear() { //not accessed in playlist
 		
 		this.setHead(null);
 		this.setTail(null);
 		this.setSize(0);
 		return true;
+		
 	}
 
 	public boolean contains(T o) {
 
-		Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+		Node<T> currentNode = new Node<T>(null);
 		currentNode.setNext(this.getHead().getNext());
-		currentNode.setData(this.getHead().getData());
-		System.out.println(this.getSize());
-		for (int i = 0; i < this.getSize(); i++) { //this isn't running enough times
+		currentNode.setData((T) this.getHead().getData());
+		
+		for (int i = 0; i < this.getSize(); i++) {
 			
 			if (currentNode.getData() == o) {
 				
@@ -142,19 +157,19 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 
 		if (index < 1 || index > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in get method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in get method of MyList_CircularLinkedList.");
 			return null;
 			
 		} else {
 		
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+			Node<T> currentNode = new Node<T>(null);
 			
 			for (int i = 0; i < index; i++) {
 			
 				if (i == 0) {
 					
 					currentNode.setNext(this.getHead().getNext());
-					currentNode.setData(this.getHead().getData());
+					currentNode.setData((T) this.getHead().getData());
 					
 				} else {
 					
@@ -170,9 +185,12 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 		
 	}
 
-	public int indexOf(T o) {
+	public int indexOf(T o) { //not accessed in playlist
 		
-		Node currentNode = new Node(this.getHead());
+		Node<T> currentNode = new Node<T>(null);
+		currentNode.setNext(this.getHead().getNext());
+		currentNode.setData((T) this.getHead().getData());
+		
 		for (int i = 0; i < this.getSize(); i++) {
 		
 			if (currentNode.getData() == o) {
@@ -191,7 +209,7 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 		
 	}
 	
-	public boolean isEmpty() {
+	public boolean isEmpty() { //not accessed in playlist
 
 		if (this.getHead() == null) {
 			
@@ -204,40 +222,55 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 		}
 	}
 
-	public T remove(int index) {
+	public T remove(int index) { //not accessed in playlist
 
 		if (index < 1 || index > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in remove method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in remove method of MyList_CircularLinkedList.");
 			return null;
 			
 		} else {
 			
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+			Node<T> currentNode = new Node<T>(null);
 			currentNode.setNext(this.getHead().getNext());
-			currentNode.setData(this.getHead().getData());
-			Node nextNode = new Node(null);
-			for (int i = 0; i < (index - 1); i++) {
+			currentNode.setData((T) this.getHead().getData());
+			this.setHead(currentNode);
+			Node<T> nextNode = new Node<T>(null);
 			
-				currentNode = currentNode.getNext();
-			
+			if (index == 1) {
+				
+				nextNode = currentNode.getNext();
+				this.setHead(nextNode);
+				this.setSize(this.getSize() - 1);
+				return (T) currentNode.getData();
+				
+			} else {
+				
+				for (int i = 0; i < (index - 2); i++) {
+					
+					currentNode = currentNode.getNext();
+				
+				}
+				
+				nextNode = currentNode.getNext();
+				currentNode.setNext(nextNode.getNext());
+				this.setSize(this.getSize() - 1);
+				return (T) nextNode.getData();
+				
 			}
-			nextNode = currentNode.getNext();
-			currentNode.setNext(nextNode.getNext());
-			this.setSize(this.getSize() - 1);
-			return (T) nextNode.getData();
-		
+			
 		}
 		
 	}
 
 	public T remove(T o) {
 		
-		Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+		Node<T> currentNode = new Node<T>(null);
 		currentNode.setNext(this.getHead().getNext());
-		currentNode.setData(this.getHead().getData());
-		Node nextNode = new Node(null);
+		currentNode.setData((T) this.getHead().getData());
+		Node<T> nextNode = new Node<T>(null);
 		int index = 0;
+		
 		for (int i = 0; i < this.getSize(); i++) {
 			
 			
@@ -247,7 +280,7 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 				
 			} else if (i == this.getSize()){
 				
-				System.out.println("Error: Specified song to remove is not present in LinkedList_Playlist.");
+				System.out.println("Error: Specified song to remove is not present in CircularLinkedList_Playlist.");
 				return null;
 				
 			}
@@ -255,27 +288,18 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 			currentNode = currentNode.getNext();
 			
 		}
+		
 		currentNode = this.getHead();
+		
 		for (int i = 0; i < (index - 1); i++) {
 			
 			currentNode = currentNode.getNext();
 		
 		}
-		System.out.println(currentNode.getData());
-		/**if (currentNode.getNext() == null) {
-			
-			
-			
-		} else {
-			
-			
-			
-		}**/
+		
 		nextNode = currentNode.getNext();
 		currentNode.setNext(nextNode.getNext());
-		//must update tail if we are removing the last entry
-		System.out.println(this.getTail().getData());
-		this.setSize(this.getSize() - 1); //update size in any other methods that change size of list
+		this.setSize(this.getSize() - 1);
 		return (T) nextNode.getData();
 		
 	}
@@ -284,20 +308,21 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 
 		if (index < 1 || index > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in set method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in set method of MyList_CircularLinkedList.");
 			return false;
 			
 		} else {
 			
-			Node newNode = new Node(element);
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
-			Node nextNode = new Node(null);
+			Node<T> newNode = new Node<T>(element);
+			Node<T> currentNode = new Node<T>(null);
+			Node<T> nextNode = new Node<T>(null);
+			
 			for (int i = 0; i < (index - 1); i++) {
 			
 				if (i == 0) {
 					
 					currentNode.setNext(this.getHead().getNext());
-					currentNode.setData(this.getHead().getData());
+					currentNode.setData((T) this.getHead().getData());
 					
 				} else {
 					
@@ -306,6 +331,7 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 				}
 			
 			}
+			
 			nextNode = currentNode.getNext();
 			currentNode.setNext(newNode);
 			newNode.setNext(nextNode.getNext());
@@ -321,78 +347,93 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 		
 	}
 
-	public MyList subList(int fromIndex, int toIndex) {
+	public MyList<T> subList(int fromIndex, int toIndex) { //not accessed in playlist
 
 		if (fromIndex < 1 || fromIndex > this.getSize() || toIndex < 1 || toIndex > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in subList method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in subList method of MyList_CircularLinkedList.");
 			return null;
 			
 		} else if (fromIndex > toIndex){
 			
-			System.out.println("Error: Invalid 'to' index value specified in subList method of MyList_LinkedList.");
+			System.out.println("Error: Invalid 'to' index value specified in subList method of MyList_CircularLinkedList.");
 			return null;
 			
 		} else {
 			
-			MyList_LinkedList newList = new MyList_LinkedList();
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+			MyList_LinkedList<T> newList = new MyList_LinkedList<T>();
+			Node<T> currentNode = new Node<T>(null);
 			currentNode.setNext(this.getHead().getNext());
-			currentNode.setData(this.getHead().getData());
-			for (int i = 0; i < (toIndex - 1); i++) {
+			currentNode.setData((T) this.getHead().getData());
+			
+			for (int i = 0; i < toIndex; i++) {
 				
 				if (i == (fromIndex - 1)) {
 					
 					newList.setHead(currentNode);
+					
+				} else {
+					
+					if (i == (toIndex- 1)) {
+						
+						System.out.println(currentNode.getData());
+						currentNode.setNext(null);
+						
+					}
+					
+					newList.add((T) currentNode);
 					
 				}
 				
 				currentNode = currentNode.getNext();
 				
 			}
-			newList.setTail(currentNode);
+			
 			return newList;
 			
 		}
 
 	}
 
-	public T[] toArray() {
+	public T[] toArray() { //not accessed in playlist
 
 		T[] llArray = (T[])new Object[this.getSize()];
-		Node<T> currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+		Node<T> currentNode = new Node(null);
 		currentNode.setNext(this.getHead().getNext());
-		currentNode.setData(this.getHead().getData());
+		currentNode.setData((T) this.getHead().getData());
+		
 		for (int i = 0; i < this.getSize(); i++) {
 			
 			llArray[i] = currentNode.getData();
 			currentNode = currentNode.getNext();
 			
 		}
+		
 		return llArray;
 		
 	}
 
-	public boolean swap(int position1, int position2) {
+	public boolean swap(int position1, int position2) { //not accessed in playlist
 
 		if (position1 < 1 || position1 > this.getSize() || position2 < 1 || position2 > this.getSize()) {
 			
-			System.out.println("Error: Invalid index value specified in swap method of MyList_LinkedList.");
+			System.out.println("Error: Invalid index value specified in swap method of MyList_CircularLinkedList.");
 			return false;
 			
 		} else if (position2 <= position1){
 			
-			System.out.println("Error: Invalid 'position2' index value specified in swap method of MyList_LinkedList.");
+			System.out.println("Error: Invalid 'position2' index value specified in swap method of MyList_CircularLinkedList.");
 			return false;
 			
 		} else {
 			
-			Node currentNode = new Node(null); //have to set up any other current nodes like this, but only for the constructor call of currentNode
+			Node<T> currentNode = new Node<T>(null);
 			currentNode.setNext(this.getHead().getNext());
-			currentNode.setData(this.getHead().getData());
-			Node pos1Node = new Node(null);
-			Node pos2Node = new Node(null);
-			for (int i = 0; i < (position2 - 1); i++) {
+			currentNode.setData((T) this.getHead().getData());
+			Node<T> pos1Node = new Node<T>(null);
+			Node<T> pos2Node = new Node<T>(null);
+			
+			for (int i = 0; i < position2; i++) {
 				
 				if (i == (position1 - 1)) {
 					
@@ -406,18 +447,22 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 				currentNode = currentNode.getNext();
 				
 			}
+			
 			currentNode = this.getHead();
+			this.setHead(currentNode);
+			
 			for (int i = 0; i < (position2 - 1); i++) {
 				
 				if (i == (position1 - 1)) {
 					
-					currentNode.setData(pos1Node.getData());
+					currentNode.setData(pos2Node.getData());
 					
 				}
 				currentNode = currentNode.getNext();
 				
 			}
-			currentNode.setData(pos2Node.getData());
+			
+			currentNode.setData(pos1Node.getData());
 			return true;
 			
 		}
@@ -428,13 +473,40 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
 
 		if (Math.abs(positions) > this.getSize()) {
 			
-			System.out.println("Error: Invalid number of positions specified in shift method of MyList_LinkedList.");
+			System.out.println("Error: Invalid number of positions specified in shift method of MyList_CircularLinkedList.");
 			return false;
 			
 		} else {
 			
-			//shift elements by that many positions
-			return true;
+			Node<T> tailNode = new Node<T>(null);
+			Node<T> currentNode = new Node<T>(null);
+			currentNode.setNext(this.getHead().getNext());
+			currentNode.setData((T) this.getHead().getData());
+			
+			for (int i = 0; i < this.getSize(); i++) {
+				
+				currentNode = currentNode.getNext();
+				
+			}
+			
+			tailNode = currentNode;
+			currentNode.setNext(this.getHead().getNext());
+			currentNode.setData((T) this.getHead().getData());
+			this.setHead(currentNode);
+			
+			if (positions == 0 || positions == this.getSize()) {
+				
+				return true;
+				
+			} else if (positions > 0) {
+				
+				return true; //shifting elements to the right
+				
+			} else {
+				
+				return true; //shifting elements to the left
+				
+			}
 			
 		}
 		
