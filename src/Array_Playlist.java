@@ -115,6 +115,7 @@ public class Array_Playlist {
 		for(int i = 0; i < p.totalSongs(); i++) {
 			playlist.add(p.getSongAt(placeholder, i + 1));
 		}
+		return true;
 		
 	}
 	
@@ -128,8 +129,8 @@ public class Array_Playlist {
 			return false;
 		}
 		else {
-			playlist.addAt(position, s);
-			playlist.removeAt(OriginalIndex);
+			playlist.add(position, s);
+			playlist.remove(OriginalIndex);
 			playlist.set(position, s);
 			OriginalIndex = 0;
 			return true;

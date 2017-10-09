@@ -1,5 +1,5 @@
 
-public class MyList_Array<T> implements MyList {
+public class MyList_Array<T> implements MyList<T> {
 	
 	public T[] list;
 	
@@ -30,7 +30,7 @@ public class MyList_Array<T> implements MyList {
 		
 	}
 	
-	public boolean addAt(int index, T o) {
+	public boolean add(int index, T o) {
 		
 		if(index < 0 || index > ArraySize) {
 			System.out.println("Bad Index.");
@@ -53,7 +53,7 @@ public class MyList_Array<T> implements MyList {
 				return true;
 			}
 			
-			this.list[index] = o;
+			this.list[index] = (T) o;
 			ArraySize++;
 		}
 		
@@ -88,13 +88,14 @@ public class MyList_Array<T> implements MyList {
 				this.remove(i);
 			}
 			ArraySize = 0;
+			return true;
 		}
 		
 	}
 	
-	public boolean contains(T o, String search) {
+	public boolean contains(T o) {
 		
-		search = "";
+		String search = "";
 		if(((MyList) o).contains(search)) {
 			System.out.println(o);
 			return true;
@@ -124,7 +125,7 @@ public class MyList_Array<T> implements MyList {
 		
 	}
 	
-	public T removeAt(int index) {
+	public T remove(int index) {
 		
 		if(index < 0 || index > capacity) {
 			System.out.println("Bad Index.");
@@ -198,7 +199,7 @@ public class MyList_Array<T> implements MyList {
 		return array;
 	}
 	
-	boolean swap(int position1, int position2) {
+	public boolean swap(int position1, int position2) {
 		
 		int placeholder = 0;
 		int greater = 0;
@@ -242,7 +243,7 @@ public class MyList_Array<T> implements MyList {
 		}
 	}
 	
-	boolean shift(int positions) {
+	public boolean shift(int positions) {
 		
 		if(positions > size()) {
 			return false;
@@ -254,17 +255,15 @@ public class MyList_Array<T> implements MyList {
 		else if(positions > 0) {
 			for (int i = ArraySize; i > positions; i--) {
 				this.list[i] = this.list[i - 1];
-				return true;
 			}
-		}
-			else {
-				for (int i = ArraySize; i < positions; i++) {
-					this.list[i] = this.list[i + 1];
-					return true;
-				}
+			return true;
+		} else {
+			for (int i = ArraySize; i < positions; i++) {
+				this.list[i] = this.list[i + 1];
 			}
+			return true;
 		}
-		
 	}
-	
+		
 }
+	
