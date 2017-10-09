@@ -15,7 +15,7 @@ public class Tests {
 			
 		}**/
 		
-		CircularLinkedList_Playlist p = new CircularLinkedList_Playlist("dicks");
+		CircularLinkedList_Playlist p = new CircularLinkedList_Playlist("test");
 		Song s1 = new Song("song1", "Cold Play", 2.4f);
 		Song s2 = new Song("song2", "Cold Play", 3.56f);
 		Song s3 = new Song("song3", "Cold Play", 3.56f);
