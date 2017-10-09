@@ -36,7 +36,7 @@ public class LinkedList_Playlist {
 		
 	}
 	
-	Song getSongAt(int index) { //why is a song a parameter here in the insturctions?
+	Song getSongAt(int index) { //why is a song a parameter here in the instructions?
 		
 		Song song = new Song("", "", 0);
 		song = (Song) playlist.get(index);
@@ -65,8 +65,17 @@ public class LinkedList_Playlist {
 	
 	float playlistTime() {
 		
-		//need to do this one
-		return 0;
+		Song currentSong = new Song("", "", 0);
+		float totalTime = 0f;
+		
+		for (int i = 0; i < this.totalSongs(); i++) {
+			
+			currentSong = (Song) playlist.get(i + 1);
+			totalTime = (totalTime + currentSong.getPlayTime());
+			
+		}
+		
+		return totalTime;
 		
 	}
 	
@@ -85,7 +94,7 @@ public class LinkedList_Playlist {
 		for (int i = 0; i < this.totalSongs(); i++) {
 			
 			currentSong = (Song) playlist.get(i + 1);
-			if (currentSong.getArtist() == name) { //need to make this case insensitive
+			if (currentSong.getArtist().toLowerCase().equals(name.toLowerCase())) {
 				
 				System.out.println(currentSong.getSongName());
 				check = 1;
@@ -96,7 +105,7 @@ public class LinkedList_Playlist {
 		
 		if (check == 0) {
 			
-			System.out.println("No songs by the specified artist in playlist.");
+			System.out.println("No songs by the specified artist in current playlist.");
 			
 		}
 		
@@ -123,7 +132,8 @@ public class LinkedList_Playlist {
 			
 		} else {
 			
-			return true;
+			//find song's original position and delete that entry after adding entry in specified position, both using the set method
+			return true; //need to do this one
 			
 		}
 		
@@ -131,6 +141,7 @@ public class LinkedList_Playlist {
 	
 	boolean MoveAllSongs(int positions) {
 		
+		playlist.shift(positions);
 		return false;
 		
 	}
