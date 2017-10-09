@@ -5,10 +5,10 @@ public class MyList_Array<T> implements MyList {
 	
 	private int ArraySize, capacity;
 	
-	private static final int INITIAL_CAPACITY = 10;
+	private static final int INITIAL_CAPACITY = 10; //temporary
 	
 	public MyList_Array() {
-		capacity = INITIAL_CAPACITY;
+		capacity = INITIAL_CAPACITY; //temporary
 		ArraySize = 0;
 	}
 	
@@ -30,7 +30,7 @@ public class MyList_Array<T> implements MyList {
 		
 	}
 	
-	public boolean add(int index, T o) {
+	public boolean addAt(int index, T o) {
 		
 		if(index < 0 || index > ArraySize) {
 			System.out.println("Bad Index.");
@@ -54,7 +54,7 @@ public class MyList_Array<T> implements MyList {
 			}
 			
 			this.list[index] = o;
-			capacity++;
+			ArraySize++;
 		}
 		
 		return true;
@@ -80,14 +80,26 @@ public class MyList_Array<T> implements MyList {
 	
 	public boolean clear() {
 		
-		
+		if(ArraySize == 0) {
+			return false;
+		}
+		else {
+			for(int i = ArraySize; i > 0; i--) {
+				this.remove(i);
+			}
+			ArraySize = 0;
+		}
 		
 	}
 	
-	public boolean contains(T o) {
+	public boolean contains(T o, String search) {
 		
-		
-		
+		search = "";
+		if(((MyList) o).contains(search)) {
+			System.out.println(o);
+			return true;
+		}
+		return false;
 	}
 	
 	public T get(int index) {
@@ -104,7 +116,7 @@ public class MyList_Array<T> implements MyList {
 	
 	public boolean isEmpty() {
 		
-		if(capacity != 0) {
+		if(ArraySize != 0) {
 			return false;
 		}
 		
@@ -112,18 +124,18 @@ public class MyList_Array<T> implements MyList {
 		
 	}
 	
-	public T remove(int index) {
+	public T removeAt(int index) {
 		
-		if(index < 0 || index > ArraySize) {
+		if(index < 0 || index > capacity) {
 			System.out.println("Bad Index.");
 		}
-		else if(index == ArraySize) {
-			capacity--;
+		else if(index == capacity) {
+			ArraySize--;
 		}
 		
 		else {
 			if (this.capacity == this.ArraySize) {
-				capacity--;
+				ArraySize--;
 			}
 			
 			for (int i = ArraySize; i > index; i--) {
@@ -132,13 +144,13 @@ public class MyList_Array<T> implements MyList {
 			
 		}
 		
-		capacity--;
+		ArraySize--;
 		return this.remove(index);
 	}
 	
 	public T remove(T o) {
 		
-		capacity--;
+		ArraySize--;
 		return this.remove(o);
 		
 	}
@@ -157,25 +169,101 @@ public class MyList_Array<T> implements MyList {
 	
 	public MyList subList(int fromIndex, int toIndex) {
 		
+		int subListSize = (toIndex - fromIndex);
+		MyList innerList = new Object[subListSize];
 		
+		if(fromIndex < 1 || fromIndex > capacity || 
+				toIndex < 1 || toIndex > capacity || fromIndex > toIndex) {
+			System.out.println("Indecies Provided are Invalid.");
+			return null;
+		}
+		
+		else {
+			for(int i = 0; i < subListSize; i++) {
+				innerList[i] = (list[fromIndex + i]);
+			}
 		
 	}
+		
+		return innerList;
+}
 	
 	public T[] toArray() {
 		
+		T[] array = (T[])new Object[this.size()];
 		
-		
+		for (int i = 0; i < this.size(); i++) {
+			array[i] = list[i];
+		}
+		return array;
 	}
 	
 	boolean swap(int position1, int position2) {
 		
+		int placeholder = 0;
+		int greater = 0;
+		T[] array = (T[])new Object[this.size()];
 		
+		if(position1 > position2) {
+			greater = position1;
+		} else {
+			greater = position2;
+		}
 		
+		if (position1 < 1 || position1 > this.size() || 
+				position2 < 1 || position2 > this.size()) {
+			
+			System.out.println("Invalid Indecies Provided.");
+			return false;
+		}
+		else {
+			
+			for(int i = 0; i < greater; i++) {
+				if(i == position1) {
+					placeholder = position2;
+					position2 = position1;
+					position1 = placeholder;
+					
+					placeholder = 0;
+					greater = 0;
+				}
+				else if(i == position2) {
+					placeholder = position1;
+					position1 = position2;
+					position2 = placeholder;
+					
+					placeholder = 0;
+					greater = 0;
+				}
+			}
+			
+			return true;
+			
+		}
 	}
 	
 	boolean shift(int positions) {
 		
+		if(positions > size()) {
+			return false;
+		}
 		
+		else if (positions == 0 || positions == size()) {
+			return true;
+		}
+		else if(positions > 0) {
+			for (int i = ArraySize; i > positions; i--) {
+				this.list[i] = this.list[i - 1];
+				return true;
+			}
+		}
+			else {
+				for (int i = ArraySize; i < positions; i++) {
+					this.list[i] = this.list[i + 1];
+					return true;
+				}
+			}
+		}
 		
 	}
 	
