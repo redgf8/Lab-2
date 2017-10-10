@@ -1,21 +1,19 @@
 
 public class MyList_Array<T> implements MyList<T> {
   
-  public T[] list;
+  private T[] list;
   
   private int ArraySize, capacity;
   
-  private static final int INITIAL_CAPACITY = 10; //temporary
-  
   public MyList_Array() {
-    capacity = INITIAL_CAPACITY; //temporary
+    capacity = 1000000;
     ArraySize = 0;
   }
   
-  public MyList_Array(int MaxCapcity) {
+  public MyList_Array(int capacity) {
     this.capacity = capacity;
     this.ArraySize = 0;
-    list = (T[]) new Object[this.capacity];
+    list = (T[]) new Object[capacity];
   }
   
   private void reallocate() {
@@ -53,7 +51,7 @@ public class MyList_Array<T> implements MyList<T> {
         return true;
       }
       
-      this.list[index] = (T) o;
+      this.list[index] = o;
       ArraySize++;
     }
     
@@ -62,11 +60,10 @@ public class MyList_Array<T> implements MyList<T> {
   }
   
   public boolean add(T o) {
-    
-    
-    if(ArraySize < capacity) {
+
+	if(ArraySize <= capacity) {
       list[ArraySize] = o;
-      ArraySize++;
+      ArraySize+=1;
       return true;
     }
     
@@ -169,24 +166,24 @@ public class MyList_Array<T> implements MyList<T> {
   }
   
   public MyList subList(int fromIndex, int toIndex) {
-    
-    int subListSize = (toIndex - fromIndex);
-    MyList innerList = new Object[subListSize];
-    
-    if(fromIndex < 1 || fromIndex > capacity || 
-        toIndex < 1 || toIndex > capacity || fromIndex > toIndex) {
-      System.out.println("Indecies Provided are Invalid.");
-      return null;
-    }
-    
-    else {
-      for(int i = 0; i < subListSize; i++) {
-        innerList[i] = (list[fromIndex + i]);
-      }
-    
-  }
-    
-    return innerList;
+//    
+//    int subListSize = (toIndex - fromIndex);
+//    MyList innerList = new Object[subListSize];
+//    
+//    if(fromIndex < 1 || fromIndex > capacity || 
+//        toIndex < 1 || toIndex > capacity || fromIndex > toIndex) {
+//      System.out.println("Indices Provided are Invalid.");
+//      return null;
+//    }
+//    
+//    else {
+//      for(int i = 0; i < subListSize; i++) {
+//        innerList[i] = (list[fromIndex + i]);
+//      }
+//    
+//  }
+//    
+    return null;
 }
   
   public T[] toArray() {
