@@ -1,7 +1,7 @@
 
 public interface MyList<T> {
 	
-	boolean addAt(int index, T o);
+	boolean add(int index, T o);
 	
 	boolean add(T o);
 	
@@ -15,11 +15,11 @@ public interface MyList<T> {
 	
 	boolean isEmpty();
 	
-	T removeAt(int index);
+	T remove(int index);
 	
 	T remove(T o);
 	
-	boolean set(int index, T o);
+	boolean set(int index, T element);
 	
 	int size();
 	
