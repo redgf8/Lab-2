@@ -1,149 +1,218 @@
 
 public class LinkedList_Playlist {
-	
-	private String name = "";
-	private MyList_LinkedList playlist = new MyList_LinkedList();
+  
+  private String name = "";
+  private MyList_LinkedList playlist = new MyList_LinkedList();
 
-	public LinkedList_Playlist(String name) {
-		
-		this.setName(name);
-		
-	}
-	
-	public void setName(String name) {
-		
-		this.name = name;
-		
-	}
-	
-	public String playlistName() {
-		
-		return this.name;
-		
-	}
-	
-	boolean addSong(Song s) {
-		
-		playlist.add(s);
-		return true;
-		
-	}
-	
-	boolean addSong(Song s, int index) {
-		
-		playlist.add(index, s);
-		return true;
-		
-	}
-	
-	Song getSongAt(int index) { //why is a song a parameter here in the instructions?
-		
-		Song song = new Song("", "", 0);
-		song = (Song) playlist.get(index);
-		return song;
-		
-	}
-	
-	MyList_LinkedList getList() {
-		
-		return playlist;
-		
-	}
-	
-	boolean removeSong(Song s) {
-		
-		playlist.remove(s);
-		return true;
-		
-	}
-	
-	int totalSongs() {
-		
-		return playlist.getSize();
-		
-	}
-	
-	float playlistTime() {
-		
-		Song currentSong = new Song("", "", 0);
-		float totalTime = 0f;
-		
-		for (int i = 0; i < this.totalSongs(); i++) {
-			
-			currentSong = (Song) playlist.get(i + 1);
-			totalTime = (totalTime + currentSong.getPlayTime());
-			
-		}
-		
-		return totalTime;
-		
-	}
-	
-	boolean isSongInPlaylist(Song s) { //changed this to just song, not sure how to implement accepting just name or just name and artist as in instructions
-		
-		//Song song = new Song(name, artist, 0); //will probably always return false because we're not given the playtime? should this just be a song parameter?
-		return playlist.contains(s);
-		
-	}
-	
-	void songsByArtist(String name) {
-		
-		Song currentSong = new Song("", "", 0);
-		int check = 0;
-		
-		for (int i = 0; i < this.totalSongs(); i++) {
-			
-			currentSong = (Song) playlist.get(i + 1);
-			if (currentSong.getArtist().toLowerCase().equals(name.toLowerCase())) {
-				
-				System.out.println(currentSong.getSongName());
-				check = 1;
-				
-			}
-			
-		}
-		
-		if (check == 0) {
-			
-			System.out.println("No songs by the specified artist in current playlist.");
-			
-		}
-		
-	}
-	
-	boolean addSongsFrom(LinkedList_Playlist p) {
+  public LinkedList_Playlist(String name) {
+    
+    this.setName(name);
+    
+  }
+  
+  public void setName(String name) {
+    
+    this.name = name;
+    
+  }
+  
+  public String playlistName() {
+    
+    return this.name;
+    
+  }
+  
+  public boolean addSong(Song s) {
+    
+    playlist.add(s);
+    return true;
+    
+  }
+  
+  public boolean addSong(Song s, int index) {
+    
+    playlist.add(index, s);
+    return true;
+    
+  }
+  
+  public Song getSongAt(int index) { //why is a song a parameter here in the instructions?
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return null;
+      
+    } else {
+      
+      Song song = new Song("", "", 0);
+      song = (Song) playlist.get(index);
+      return song;
+      
+    }
+    
+  }
+  
+  public MyList_LinkedList getList() {
+    
+    return playlist;
+    
+  }
+  
+  public boolean removeSong(Song s) {
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return false;
+      
+    } else {
+      
+      playlist.remove(s);
+      return true;
+      
+    }
+    
+    
+  }
+  
+  public int totalSongs() {
+    
+    return playlist.getSize();
+    
+  }
+  
+  public float playlistTime() {
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return 0f;
+      
+    } else {
+      
+      Song currentSong = new Song("", "", 0);
+      float totalTime = 0f;
+      
+      for (int i = 0; i < this.totalSongs(); i++) {
+        
+        currentSong = (Song) playlist.get(i + 1);
+        totalTime = (totalTime + currentSong.getPlayTime());
+        
+      }
+      
+      return totalTime;
+      
+    }
+    
+  }
+  
+  public boolean isSongInPlaylist(String name, String artist) {
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return false;
+      
+    } else {
+      
+      Song song = new Song(name, artist, 0);
+      return playlist.contains(song);
+      
+    }
+    
+  }
+  
+  public void songsByArtist(String name) {
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      
+    } else {
+      
+      Song currentSong = new Song("", "", 0);
+      int check = 0;
+      
+      for (int i = 0; i < this.totalSongs(); i++) {
+        
+        currentSong = (Song) playlist.get(i + 1);
+        if (currentSong.getArtist().toLowerCase().equals(name.toLowerCase())) {
+          
+          System.out.println(currentSong.getSongName());
+          check = 1;
+          
+        }
+        
+      }
+      
+      if (check == 0) {
+        
+        System.out.println("No songs by the specified artist in current playlist.");
+        
+      }
+      
+    }
+    
+  }
+  
+  public boolean addSongsFrom(LinkedList_Playlist p) {
 
-		for (int i = 0; i < p.totalSongs(); i++) {
-			
-			playlist.add(p.getSongAt(i + 1));
-			
-		}
-		
-		return true;
-		
-	}
-	
-	boolean MoveSong(Song s, int position) {
-		
-		if (position < 1 || position > this.totalSongs()) {
-			
-			System.out.println("Error: Invalid index value specified.");
-			return false;
-			
-		} else {
-			
-			//find song's original position and delete that entry after adding entry in specified position, both using the set method
-			return true; //need to do this one
-			
-		}
-		
-	}
-	
-	boolean MoveAllSongs(int positions) {
-		
-		playlist.shift(positions);
-		return false;
-		
-	}
-	
+    for (int i = 0; i < p.totalSongs(); i++) {
+      
+      playlist.add(p.getSongAt(i + 1));
+      
+    }
+    
+    return true;
+    
+  }
+  
+  public boolean moveSong(Song s, int position) {
+    
+    if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return false;
+      
+    } else {
+      
+      if (position < 1 || position > this.totalSongs()) {
+        
+        System.out.println("Error: Invalid index value specified in moveSong method of LinkedList_Playlist.");
+        return false;
+        
+      } else if (playlist.contains(s) == false) {
+        
+        System.out.println("Error: The song specified to move was not present in the current playlist.");
+        return false;
+        
+      } else {
+        
+        playlist.remove(playlist.indexOf(s));
+        playlist.add(position, s);
+        return true;
+        
+      }
+      
+    }
+    
+  }
+  
+  public boolean moveAllSongs(int positions) {
+    
+if (playlist.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return false;
+      
+    } else {
+      
+      playlist.shift(positions);
+      return true;
+      
+    }
+    
+  }
+  
 }
