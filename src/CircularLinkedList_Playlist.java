@@ -156,7 +156,7 @@ public class CircularLinkedList_Playlist {
     
   }
   
-  public boolean addSongsFrom(LinkedList_Playlist p) {
+  public boolean addSongsFrom(CircularLinkedList_Playlist p) {
 
     for (int i = 0; i < p.totalSongs(); i++) {
       

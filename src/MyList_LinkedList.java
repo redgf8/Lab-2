@@ -1,5 +1,4 @@
 
-//maybe make program close if method returns null?
 public class MyList_LinkedList<T> implements MyList<T> {
   
   private Node<T> head;
@@ -39,7 +38,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
 
     if (index == (this.getSize() + 1)) {
       
-      this.add(o); //experimental, not necessary
+      this.add(o);
       return true;
       
     } else if (index < 1 || index > this.getSize()) {
@@ -112,7 +111,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
     
   }
 
-  public boolean clear() { //not accessed in playlist
+  public boolean clear() {
     
     this.setHead(null);
     this.setSize(0);
@@ -148,37 +147,46 @@ public class MyList_LinkedList<T> implements MyList<T> {
 
   public T get(int index) {
 
-    if (index < 1 || index > this.getSize()) {
+    if (this.isEmpty() == true) {
       
-      System.out.println("Error: Invalid index value specified in get method of MyList_LinkedList.");
+      System.out.println("Error: Playlist is empty.");
       return null;
       
     } else {
-    
-      Node<T> currentNode = new Node<T>(null);
       
-      for (int i = 0; i < index; i++) {
+       if (index < 1 || index > this.getSize()) {
+        
+        System.out.println("Error: Invalid index value specified in get method of MyList_LinkedList.");
+        return null;
+        
+      } else {
       
-        if (i == 0) {
-          
-          currentNode.setNext(this.getHead().getNext());
-          currentNode.setData(this.getHead().getData());
-          
-        } else {
-          
-          currentNode = currentNode.getNext();
-          
+        Node<T> currentNode = new Node<T>(null);
+        
+        for (int i = 0; i < index; i++) {
+        
+          if (i == 0) {
+            
+            currentNode.setNext(this.getHead().getNext());
+            currentNode.setData(this.getHead().getData());
+            
+          } else {
+            
+            currentNode = currentNode.getNext();
+            
+          }
+        
         }
+        
+        return (T) currentNode.getData();
       
       }
-      
-      return (T) currentNode.getData();
     
     }
     
   }
 
-  public int indexOf(T o) { //not accessed in playlist
+  public int indexOf(T o) {
     
     Node<T> currentNode = new Node<T>(null);
     currentNode.setNext(this.getHead().getNext());
@@ -202,7 +210,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
     
   }
   
-  public boolean isEmpty() { //not accessed in playlist
+  public boolean isEmpty() {
 
     if (this.getHead() == null) {
       
@@ -215,7 +223,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
     }
   }
 
-  public T remove(int index) { //not accessed in playlist
+  public T remove(int index) {
 
     if (index < 1 || index > this.getSize()) {
       
@@ -270,6 +278,7 @@ public class MyList_LinkedList<T> implements MyList<T> {
       if (currentNode.getData() == o) {
 
         index = i;
+        break;
         
       } else if (i == this.getSize()){
         
@@ -284,16 +293,27 @@ public class MyList_LinkedList<T> implements MyList<T> {
     
     currentNode = this.getHead();
     
-    for (int i = 0; i < (index - 1); i++) {
+    if (index == 0) {
       
-      currentNode = currentNode.getNext();
+      nextNode = currentNode.getNext();
+      this.setHead(nextNode);
+      this.setSize(this.getSize() - 1);
+      return (T) nextNode.getData();
+      
+    } else {
+    
+      for (int i = 0; i < (index - 1); i++) {
+      
+        currentNode = currentNode.getNext();
+    
+      }
+    
+      nextNode = currentNode.getNext();
+      currentNode.setNext(nextNode.getNext());
+      this.setSize(this.getSize() - 1);
+      return (T) nextNode.getData();
     
     }
-    
-    nextNode = currentNode.getNext();
-    currentNode.setNext(nextNode.getNext());
-    this.setSize(this.getSize() - 1);
-    return (T) nextNode.getData();
     
   }
 
@@ -340,74 +360,94 @@ public class MyList_LinkedList<T> implements MyList<T> {
     
   }
 
-  public MyList<T> subList(int fromIndex, int toIndex) { //not accessed in playlist
+  public MyList<T> subList(int fromIndex, int toIndex) {
 
-    if (fromIndex < 1 || fromIndex > this.getSize() || toIndex < 1 || toIndex > this.getSize()) {
+    if (this.isEmpty() == true) {
       
-      System.out.println("Error: Invalid index value specified in subList method of MyList_LinkedList.");
-      return null;
-      
-    } else if (fromIndex > toIndex){
-      
-      System.out.println("Error: Invalid 'to' index value specified in subList method of MyList_LinkedList.");
+      System.out.println("Error: Playlist is empty.");
       return null;
       
     } else {
       
-      MyList_LinkedList<T> newList = new MyList_LinkedList<T>();
-      Node<T> currentNode = new Node<T>(null);
-      Node<T> newNode = new Node<T>(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      
-      for (int i = 0; i < toIndex; i++) {
+      if (fromIndex < 1 || fromIndex > this.getSize() || toIndex < 1 || toIndex > this.getSize()) {
         
-        if (i == (fromIndex - 1)) {
+        System.out.println("Error: Invalid index value specified in subList method of MyList_LinkedList.");
+        return null;
+        
+      } else if (fromIndex > toIndex){
+        
+        System.out.println("Error: Invalid 'to' index value specified in subList method of MyList_LinkedList.");
+        return null;
+        
+      } else {
+        
+        MyList_LinkedList<T> newList = new MyList_LinkedList<T>();
+        Node<T> currentNode = new Node<T>(null);
+        Node<T> newNode = new Node<T>(null);
+        currentNode.setNext(this.getHead().getNext());
+        currentNode.setData(this.getHead().getData());
+        
+        for (int i = 0; i < toIndex; i++) {
           
-          newList.setHead(currentNode);
-          
-        } else {
-          
-          if (i == (toIndex - 1)) {
+          if (i == (fromIndex - 1)) {
             
-            newNode.setData(currentNode.getData());
-            newNode.setNext(null);
+            newList.setHead(currentNode);
+            
+          } else {
+            
+            if (i == (toIndex - 1)) {
+              
+              newNode.setData(currentNode.getData());
+              newNode.setNext(null);
+              
+            }
+            
+            newList.add((T) newNode);
             
           }
           
-          newList.add((T) newNode);
+          currentNode = currentNode.getNext();
           
         }
         
+        return newList;
+      
+     }
+    
+   }
+
+ }
+
+  public T[] toArray() {
+
+    if (this.isEmpty() == true) {
+      
+      System.out.println("Error: Playlist is empty.");
+      return null;
+      
+    } else {
+      
+      T[] llArray = (T[])new Object[this.getSize()];
+      Node<T> currentNode = new Node(null);
+      currentNode.setNext(this.getHead().getNext());
+      currentNode.setData((T) this.getHead().getData());
+      
+      for (int i = 0; i < this.getSize(); i++) {
+        
+        llArray[i] = currentNode.getData();
         currentNode = currentNode.getNext();
         
       }
       
-      return newList;
-      
-    }
-
-  }
-
-  public T[] toArray() { //not accessed in playlist
-
-    T[] llArray = (T[])new Object[this.getSize()];
-    Node<T> currentNode = new Node(null);
-    currentNode.setNext(this.getHead().getNext());
-    currentNode.setData((T) this.getHead().getData());
-    
-    for (int i = 0; i < this.getSize(); i++) {
-      
-      llArray[i] = currentNode.getData();
-      currentNode = currentNode.getNext();
+      return llArray;
       
     }
     
-    return llArray;
+    
     
   }
 
-  public boolean swap(int position1, int position2) { //not accessed in playlist
+  public boolean swap(int position1, int position2) {
 
     if (position1 < 1 || position1 > this.getSize() || position2 < 1 || position2 > this.getSize()) {
       
@@ -431,11 +471,13 @@ public class MyList_LinkedList<T> implements MyList<T> {
         
         if (i == (position1 - 1)) {
           
-          pos1Node = currentNode;
+          pos1Node.setData(currentNode.getData());
+          pos1Node.setNext(currentNode.getNext());
           
         } else if (i == (position2 - 1)) {
           
-          pos2Node = currentNode;
+          pos2Node.setData(currentNode.getData());
+          pos2Node.setNext(currentNode.getNext());
           
         }
         currentNode = currentNode.getNext();
@@ -473,50 +515,59 @@ public class MyList_LinkedList<T> implements MyList<T> {
       
     } else {
       
-      if (positions == 0 || positions == this.getSize()) {
+      if (positions == 0 || Math.abs(positions) == this.getSize()) {
         
         return true;
         
-      } else if (positions < 0) {
+      } else {
         
-        positions = (positions - this.getSize());
+        Node<T> tailNode = new Node<T>(null);
+        Node<T> currentNode = new Node<T>(null);
+        tailNode.setNext(this.getHead().getNext());
+        tailNode.setData(this.getHead().getData());
+        this.setHead(tailNode);
+        int max = 0;
         
-      } 
-      
-      Node<T> tailNode = new Node<T>(null);
-      Node<T> currentNode = new Node<T>(null);
-      Node<T> newTailNode = new Node<T>(null);
-      
-      tailNode.setNext(this.getHead().getNext());
-      tailNode.setData(this.getHead().getData());
-      
-      for (int i = 0; i < (this.getSize() - 1); i++) {
+        if (positions < 0) { //move to the left
+          
+          positions = Math.abs(positions);
+          max = positions;
+          
+        } else { //move to the right
+          
+          max = (this.getSize() - positions);
+          
+        }
+          
+        for (int i = 0; i < (this.getSize() - 1); i++) { //find old tail
+          
+          tailNode = tailNode.getNext();
+          
+        }
         
-        tailNode = tailNode.getNext();
+        tailNode.setNext(this.getHead());
+        currentNode.setNext(this.getHead().getNext());
+        currentNode.setData(this.getHead().getData());
+        this.setHead(currentNode);
         
-      }
-      
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      this.setHead(currentNode);
-      
-      for (int i = 0; i < positions; i++) {
+        for (int i = 0; i < max; i++) { //find new head
+          
+          currentNode = currentNode.getNext();
+          
+        }
         
-        currentNode = currentNode.getNext();
+        this.setHead(currentNode);
+        currentNode = null;
+        currentNode = this.getHead();
+        this.setHead(currentNode);
         
-      }
-      
-      tailNode.setNext(this.getHead());
-      
-      
-      
-      for (int i = 0; i < (positions - 1); i++) {
+        for (int i = 0; i < (this.getSize() - 1); i++) {
+          
+          currentNode = currentNode.getNext(); //find new tail
+          
+        }
         
-        newTailNode.setNext(null);
-        
-      }
-      
-      this.setHead(currentNode);
+        currentNode.setNext(null);
       
       return true;
       
@@ -524,4 +575,6 @@ public class MyList_LinkedList<T> implements MyList<T> {
     
   }
 
+}
+  
 }
