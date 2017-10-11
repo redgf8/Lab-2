@@ -3,8 +3,5 @@ DSA Lab 2
 
 TO DO:
 
-Test Circular Linked List and Array implementations,
-Run tests,
-Write report on tests,
-Add comments,
-Make sure all code is inline with style guide,
+Add comments to code and make sure it follows stlye guide
+Write runtime analysis report
