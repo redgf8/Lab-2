@@ -1,4 +1,4 @@
-
+//written by xmod
 public class MyList_Array<T> implements MyList<T> {
   
   private T[] list;
