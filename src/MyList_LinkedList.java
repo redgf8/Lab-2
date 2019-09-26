@@ -1,600 +1,531 @@
-
+/**
+ * Linked list class to implement the MyList interface and used in a playlist
+ * @author Daniel Haluszka
+ */
 public class MyList_LinkedList<T> implements MyList<T> {
-  
+
   private Node<T> head;
-  private int size = 0;
-  
-  //create a new linked list
+  private int size;
+
+  /**
+   * Constructor for a new empty linked list
+   */
   public MyList_LinkedList() {
-    
-    this.setHead(null);
-    
+
+    this.size = 0;
+    this.head = null;
+
   }
-  
-  //set the head node of the current linked list
+
+  /**
+   * Constructor for a new linked list with specified head
+   * @param head Node to be the head of the new linked list
+   */
+  public MyList_LinkedList(Node<T> head) {
+
+    this.size = 1;
+    this.head = head;
+
+  }
+
+  /**
+   * Set the head of the current linked list
+   * @param newHead Node to be the new head of the current linked list
+   */
   public void setHead(Node<T> newHead) {
-    
+
     this.head = newHead;
-    
+
   }
-  
-  //return the head node of the current linked list
+
+  /**
+   * Get the head node of the current linked list
+   * @return Node head of the currnt linked list
+   */
   public Node<T> getHead() {
-    
+
     return this.head;
-    
+
   }
-  
-  //set the size of the current linked list
-  public void setSize(int newSize) {
+
+  // size should be exclusively managed by the class
+  /*public void setSize(int newSize) {
     
     this.size = newSize;
     
-  }
-  
-  //return the size of the current linked list
-  public int getSize() {
-    
+  }*/
+
+  /**
+   * Get the size of the current linked list
+   * @return Int size of the current linked list
+   */
+  public int size() {
+
     return this.size;
-    
+
   }
 
-  //add a new object to the current linked list at the specified index
-  public boolean add(int index, T o) {
-
-    if (index == (this.getSize() + 1)) { //if index specified is the end of the list
-      
-      this.add(o);
-      return true;
-      
-    } else if (index < 1 || index > this.getSize()) { //if index specified is invalid
-      
-      System.out.println("Error: Invalid index value specified in add method of MyList_LinkedList.");
-      return false;
-      
-    } else {
-    
-      Node<T> newNode = new Node<T>(o);
-      Node<T> currentNode = new Node<T>(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      this.setHead(currentNode);
-      Node<T> nextNode = new Node<T>(null);
-      
-      if (index == 1) { //if adding at the head of the current linked list
-
-        newNode.setNext(currentNode);
-        this.setHead(newNode);
-        this.setSize(this.size() + 1);
-        return true;
-        
-      } else {
-        
-        for (int i = 0; i < (index - 2); i++) { //find the object before the specified index and insert the new object
-          
-          currentNode = currentNode.getNext();
-        
-        }
-        
-        nextNode = currentNode.getNext();
-        newNode.setNext(nextNode);
-        currentNode.setNext(newNode);
-        this.setSize(this.size() + 1);
-        return true;
-        
-      }
-      
-    }
-    
-  }
-
-  //add a new object to the end of the current linked list
+  /**
+   * Add a new node to the end of the current linked list
+   * @param o Object value of the new node
+   * @return Boolean true if add was successful
+   */
   public boolean add(T o) {
-    
-    Node<T> newNode = new Node<T>(o);
-    
-    if (this.getHead() == null) { //if object being added is the first to be added to current linked list
-      
+
+    Node<T> newNode = new Node<>(o);
+
+    // check for adding to empty linked list
+    if (this.size == 0) {
+
       this.setHead(newNode);
-      this.setSize(1);
-      
-    } else { //else add to end of current linked list
-      
-      Node<T> currentNode = new Node<T>(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      this.setHead(currentNode);
-      for (int i = 0; i < (this.getSize() - 1); i++) {
-        
-        currentNode = currentNode.getNext();
-        
+      this.size = 1;
+
+    } else {
+
+      Node<T> currNode = this.head;
+      this.head = currNode;
+      for (int i = 0; i < (this.size - 1); i++) {
+
+        if (this.size > 1) currNode = currNode.getNext();
+
       }
-      currentNode.setNext(newNode);
-      this.setSize(this.getSize() + 1);
-      
+      currNode.setNext(newNode);
+      this.size++;
+
     }
-    
+
     return true;
-    
+
   }
 
-  //clear the current linked list
-  public boolean clear() {
-    
-    this.setHead(null);
-    this.setSize(0);
-    return true;
-    
-  }
+  /**
+   * Add a new node to the current linked list at the specified index
+   * @param index Int index at which to add the new node
+   * @param o Object value of the new node
+   *    * @return Boolean true if add was successful
+   */
+  //add a new object to the current linked list at the specified index
+  public boolean add(int index, T o) throws IndexOutOfBoundsException {
 
-  //return if the specified object is contained in the current linked list
-  public boolean contains(T o) {
+    // check for invalid index
+    if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException("Invalid index specified to add new node");
 
-    Song currentSong = new Song("", "", 0);
-    Song newSong = new Song ("", "", 0);
-    newSong = (Song) o;
-    Node<T> currentNode = new Node<T>(null);
-    currentNode.setNext(this.getHead().getNext());
-    currentNode.setData(this.getHead().getData());
-    
-    for (int i = 0; i < this.getSize(); i++) { //loop through until specified object is found or end of list is reached
-      
-      currentSong = (Song) currentNode.getData();
-      if (currentSong.getSongName().toLowerCase().equals(newSong.getSongName().toLowerCase())
-          && currentSong.getArtist().toLowerCase().equals(newSong.getArtist().toLowerCase())) {
-        
-        return true;
-        
-      }
-      currentNode = currentNode.getNext();
-      
-    }
-    
-    return false;
-    
-  }
+    // check for adding to end of list
+    if (index == (this.size)) return this.add(o);
 
-  //return the object at the specified index of current linked list
-  public T get(int index) {
-
-    if (this.isEmpty() == true) { //check for empty list
-      
-      System.out.println("Error: Playlist is empty.");
-      return null;
-      
-    } else {
-      
-       if (index < 1 || index > this.getSize()) { //if index specified is invalid
-        
-        System.out.println("Error: Invalid index value specified in get method of MyList_LinkedList.");
-        return null;
-        
-      } else {
-      
-        Node<T> currentNode = new Node<T>(null);
-        
-        for (int i = 0; i < index; i++) {
-        
-          if (i == 0) {
-            
-            currentNode.setNext(this.getHead().getNext());
-            currentNode.setData(this.getHead().getData());
-            
-          } else {
-            
-            currentNode = currentNode.getNext();
-            
-          }
-        
-        }
-        
-        return (T) currentNode.getData();
-      
-      }
-    
-    }
-    
-  }
-
-  //return the index of the specified object in current linked list
-  public int indexOf(T o) {
-    
-    Node<T> currentNode = new Node<T>(null);
-    currentNode.setNext(this.getHead().getNext());
-    currentNode.setData(this.getHead().getData());
-    
-    for (int i = 0; i < this.getSize(); i++) {
-    
-      if (currentNode.getData() == o) {
-        
-        return (i + 1);
-        
-      } else {
-        
-        currentNode = currentNode.getNext();
-        
-      }
-      
-    }
-    
-    return -1;
-    
-  }
-  
-  //return if the current linked list is empty
-  public boolean isEmpty() {
-
-    if (this.getHead() == null) {
-      
-      return true;
-      
-    } else {
-      
-      return false;
-    
-    }
-  }
-
-  //remove the object at specified index in current linked list
-  public T remove(int index) {
-
-    if (index < 1 || index > this.getSize()) { //if specified index is invalid
-      
-      System.out.println("Error: Invalid index value specified in remove method of MyList_LinkedList.");
-      return null;
-      
-    } else {
-      
-      Node<T> currentNode = new Node<T>(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      this.setHead(currentNode);
-      Node<T> nextNode = new Node<T>(null);
-      
-      if (index == 1) { //if removing the head
-        
-        nextNode = currentNode.getNext();
-        this.setHead(nextNode);
-        this.setSize(this.getSize() - 1);
-        return (T) currentNode.getData();
-        
-      } else {
-        
-        for (int i = 0; i < (index - 2); i++) { //find the index before the specified index and remove the specified index
-          
-          currentNode = currentNode.getNext();
-        
-        }
-        
-        nextNode = currentNode.getNext();
-        currentNode.setNext(nextNode.getNext());
-        this.setSize(this.getSize() - 1);
-        return (T) nextNode.getData();
-        
-      }
-      
-    }
-    
-  }
-
-  //remove the object specified from current linked list
-  public T remove(T o) {
-    
-    Node<T> currentNode = new Node<T>(null);
-    currentNode.setNext(this.getHead().getNext());
-    currentNode.setData(this.getHead().getData());
+    Node<T> newNode = new Node<T>(o);
+    Node<T> currNode = this.head;
+    this.head = currNode;
     Node<T> nextNode = new Node<T>(null);
-    int index = 0;
-    
-    for (int i = 0; i < this.getSize(); i++) { //loop through until object is found or end of list is reached
-      
-      
-      if (currentNode.getData() == o) { //if specified object is found
+
+    // check for adding at head
+    if (index == 1) {
+
+      newNode.setNext(currNode);
+      this.head = newNode;
+      this.size++;
+      return true;
+
+    } else {
+
+      for (int i = 0; i < (index - 1); i++) {
+
+        currNode = currNode.getNext();
+
+      }
+
+      nextNode = currNode.getNext();
+      newNode.setNext(nextNode);
+      currNode.setNext(newNode);
+      this.size++;
+      return true;
+
+    }
+
+  }
+
+  /**
+   * Make the current linked list empty
+   * @return Boolean true when successful
+   */
+  public boolean clear() {
+
+    this.head = null;
+    this.size = 0;
+    return true;
+
+  }
+
+  /**
+   * Check if the current list contains the specified object
+   * @param o Object to check the current linked list for
+   * @return Boolean true if the current linked list contains the specified object
+   */
+  public boolean contains(T o) throws IllegalArgumentException {
+
+    if (this.size == 0) throw new IllegalArgumentException("Linked list is empty");
+
+    Node<T> currNode = this.head;
+
+    // loop through until specified object is found or end of list is reached
+    for (int i = 0; i < this.size; i++) {
+
+      if (currNode.getData().equals(o)) return true;
+
+      currNode = currNode.getNext();
+
+    }
+
+    return false;
+
+  }
+
+  /**
+   * Get the object at the specified index of the current linked list
+   * @param index Int index of object to return
+   * @return Object at specified index in current linked list
+   */
+  public T get(int index) throws IndexOutOfBoundsException, NullPointerException {
+
+    // check for empty list
+    if (this.size == 0) throw new NullPointerException("Linked list is empty");
+
+    // check for invalid index
+    if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException("Invalid index specified to get object");
+
+    // check for getting data at head
+    if (index == 0) return this.head.getData();
+
+    Node<T> currNode = this.head;
+
+    for (int i = 0; i < index; i++) {
+
+        currNode = currNode.getNext();
+
+    }
+
+    return currNode.getData();
+
+  }
+
+  /**
+   * Get the index of the specified object in the current linked list
+   * @param o Object to return the index of
+   * @return The index of the object specified in the current linked list
+   */
+  public int indexOf(T o) throws IllegalArgumentException{
+
+    Node<T> currNode = this.head;
+    int index = -1;
+
+    for (int i = 0; i < this.size; i++) {
+
+      if (currNode.getData().equals(o)) {
 
         index = i;
         break;
-        
-      } else if (i == this.getSize()){ //if specified object is not found
-        
-        System.out.println("Error: Specified song to remove is not present in LinkedList_Playlist.");
-        return null;
-        
+
+      } else {
+
+        currNode = currNode.getNext();
+
       }
-      
-      currentNode = currentNode.getNext();
-      
+
     }
-    
-    currentNode = this.getHead();
-    
-    if (index == 0) { //if removing the head
-      
-      nextNode = currentNode.getNext();
-      this.setHead(nextNode);
-      this.setSize(this.getSize() - 1);
-      return (T) nextNode.getData();
-      
+
+    // check for object specified not in list
+    if (index == -1) throw new IllegalArgumentException("Object specified is not present in linked list");
+
+    return index;
+
+  }
+
+  /**
+   * Check if the current linked list is empty
+   * @return Boolean true if the current linked list is empty
+   */
+  public boolean isEmpty() {
+
+    return (this.size == 0) ? true : false;
+
+  }
+
+  /**
+   * Remove the object at the specified index from the current linked list
+   * @param index Int index at which to remove object from the current linked list
+   * @return Object removed from specified index of current linked list
+   */
+  public T remove(int index) throws IndexOutOfBoundsException {
+
+    // check for invalid index
+    if (index < 0 || index >= this.size) throw new IndexOutOfBoundsException("Invalid index specified to remove object");
+
+    Node<T> currNode = this.head;
+    this.setHead(currNode);
+    Node<T> nextNode;
+
+    // check for removing head
+    if (index == 0) {
+
+      nextNode = currNode.getNext();
+      this.head = nextNode;
+      this.size--;
+      return currNode.getData();
+
     } else {
-    
+
       for (int i = 0; i < (index - 1); i++) {
-      
+
+        currNode = currNode.getNext();
+
+      }
+
+      nextNode = currNode.getNext();
+      currNode.setNext(nextNode.getNext());
+      this.size--;
+      return nextNode.getData();
+
+    }
+
+  }
+
+  /**
+   * Remove the object specified from the current linked list
+   * @param o Object to remove from the current linked list
+   * @return Object removed from the current linked list
+   */
+  public T remove(T o) throws IllegalArgumentException {
+
+    Node<T> currentNode = this.head;
+    int index = -1;
+
+    for (int i = 0; i < this.size; i++) {
+
+      if (currentNode.getData().equals(o))   {
+
+        index = i;
+        break;
+
+      }
+
+      currentNode = currentNode.getNext();
+
+    }
+
+    if (index == -1) throw new IllegalArgumentException("Object specified is not present in linked list");
+
+    return this.remove(index);
+
+  }
+
+  /**
+   * Set the object at the specified index of the current linked list to the specified object
+   * @param index Int index at which to set
+   * @param o Object to set specified index of current linked list to
+   * @return Boolean true when successful
+   */
+  public boolean set(int index, T o) throws IndexOutOfBoundsException {
+
+    // check for invalid index
+    if (index < 1 || index >= this.size) throw new IndexOutOfBoundsException("Invalid index specified to set");
+
+    Node<T> newNode = new Node(o);
+    Node<T> currentNode = this.head;
+    Node<T> nextNode;
+
+    for (int i = 0; i < index; i++) {
+
         currentNode = currentNode.getNext();
-    
-      }
-    
-      nextNode = currentNode.getNext();
-      currentNode.setNext(nextNode.getNext());
-      this.setSize(this.getSize() - 1);
-      return (T) nextNode.getData();
-    
-    }
-    
-  }
 
-  //set the specified index of current linked list to specified object
-  public boolean set(int index, T element) {
-
-    if (index < 1 || index > this.getSize()) { //if specified index is invalid
-      
-      System.out.println("Error: Invalid index value specified in set method of MyList_LinkedList.");
-      return false;
-      
-    } else {
-      
-      Node<T> newNode = new Node<T>(element);
-      Node<T> currentNode = new Node<T>(null);
-      Node<T> nextNode = new Node<T>(null);
-      
-      for (int i = 0; i < (index - 1); i++) { //loop to specified index and change data
-      
-        if (i == 0) {
-          
-          currentNode.setNext(this.getHead().getNext());
-          currentNode.setData(this.getHead().getData());
-          
-        } else {
-          
-          currentNode = currentNode.getNext();
-          
-        }
-      
-      }
-      
-      nextNode = currentNode.getNext();
-      currentNode.setNext(newNode);
-      newNode.setNext(nextNode.getNext());
-      return true;
-    
     }
 
+    nextNode = currentNode.getNext();
+    currentNode.setNext(newNode);
+    newNode.setNext(nextNode.getNext());
+    return true;
+
   }
 
-  //return the size of current linked list
-  public int size() {
-    
-    return this.getSize();
-    
-  }
+  /**
+   * Get a sublist containing items in the current linked list from specified start to end indices
+   * @param fromIndex Int inclusive start bound of sublist
+   * @param toIndex Int exclusive end bound of sublist
+   * @return
+   */
+  public MyList_LinkedList<T> subList(int fromIndex, int toIndex) throws IllegalArgumentException, IndexOutOfBoundsException {
 
-  //return a sublist containing items in current linked list from specified index to specified index
-  public MyList<T> subList(int fromIndex, int toIndex) {
+    // check for empty list
+    if (this.size == 0) throw new IllegalArgumentException("Linked list is empty");
 
-    if (this.isEmpty() == true) { //if playlist is empty
-      
-      System.out.println("Error: Playlist is empty.");
-      return null;
-      
-    } else {
-      
-      if (fromIndex < 1 || fromIndex > this.getSize() || toIndex < 1 || toIndex > this.getSize()) { //if either specified index is invalid
-        
-        System.out.println("Error: Invalid index value specified in subList method of MyList_LinkedList.");
-        return null;
-        
-      } else if (fromIndex > toIndex){ //if second specified index is before first
-        
-        System.out.println("Error: Invalid 'to' index value specified in subList method of MyList_LinkedList.");
-        return null;
-        
-      } else {
-        
-        MyList_LinkedList<T> newList = new MyList_LinkedList<T>();
-        Node<T> currentNode = new Node<T>(null);
-        Node<T> newNode = new Node<T>(null);
-        currentNode.setNext(this.getHead().getNext());
-        currentNode.setData(this.getHead().getData());
-        
-        for (int i = 0; i < toIndex; i++) {
-          
-          if (i == (fromIndex - 1)) {
-            
-            newList.setHead(currentNode);
-            
-          } else {
-            
-            if (i == (toIndex - 1)) {
-              
-              newNode.setData(currentNode.getData());
-              newNode.setNext(null);
-              
-            }
-            
-            newList.add((T) newNode);
-            
-          }
-          
-          currentNode = currentNode.getNext();
-          
-        }
-        
-        return newList;
-      
-     }
-    
-   }
+    // check for invalid indices
+    if (fromIndex < 0 || fromIndex > this.size || toIndex < 0 || toIndex > this.size) throw new IndexOutOfBoundsException("Invalid index or indices specified to create sublist");
 
- }
+    if (fromIndex > toIndex) throw new IndexOutOfBoundsException("Specified start index is not lower than end index");
 
-  //return a new array containing the elements of current linked list
-  public T[] toArray() {
+    // check for getting sublist of size 1
+    if (fromIndex == (toIndex - 1)) return new MyList_LinkedList<>(new Node<>(this.get(fromIndex)));
 
-    if (this.isEmpty() == true) { //if playlist is empty
-      
-      System.out.println("Error: Playlist is empty.");
-      return null;
-      
-    } else {
-      
-      T[] llArray = (T[])new Object[this.getSize()];
-      Node<T> currentNode = new Node(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData((T) this.getHead().getData());
-      
-      for (int i = 0; i < this.getSize(); i++) { //loop through to end of list and add to new array
-        
-        llArray[i] = currentNode.getData();
-        currentNode = currentNode.getNext();
-        
+    Node<T> currNode = this.head;
+    MyList_LinkedList<T> newList = new MyList_LinkedList<>();
+
+    //TODO: can probably make this more efficient by not using add
+    for (int i = 0; i < toIndex; i++) {
+
+      if (i >= fromIndex) {
+
+        newList.add(currNode.getData());
+
       }
-      
-      return llArray;
-      
-    }
-    
-    
-    
-  }
 
-  //swap the data in two specified postions of current linked list
-  public boolean swap(int position1, int position2) {
+      currNode = currNode.getNext();
 
-    if (position1 < 1 || position1 > this.getSize() || position2 < 1 || position2 > this.getSize()) { //if either specified index is invalid
-      
-      System.out.println("Error: Invalid index value specified in swap method of MyList_LinkedList.");
-      return false;
-      
-    } else if (position2 <= position1){ //if second specified index is before first
-      
-      System.out.println("Error: Invalid 'position2' index value specified in swap method of MyList_LinkedList.");
-      return false;
-      
-    } else {
-      
-      Node<T> currentNode = new Node<T>(null);
-      currentNode.setNext(this.getHead().getNext());
-      currentNode.setData(this.getHead().getData());
-      Node<T> pos1Node = new Node<T>(null);
-      Node<T> pos2Node = new Node<T>(null);
-      
-      for (int i = 0; i < position2; i++) { //loop until second position is reached
-        
-        if (i == (position1 - 1)) { //if first position is found
-          
-          pos1Node.setData(currentNode.getData());
-          pos1Node.setNext(currentNode.getNext());
-          
-        } else if (i == (position2 - 1)) { //if second position is found
-          
-          pos2Node.setData(currentNode.getData());
-          pos2Node.setNext(currentNode.getNext());
-          
-        }
-        currentNode = currentNode.getNext();
-        
-      }
-      
-      currentNode = this.getHead();
-      this.setHead(currentNode);
-      
-      for (int i = 0; i < (position2 - 1); i++) { //swap values
-        
-        if (i == (position1 - 1)) {
-          
-          currentNode.setData(pos2Node.getData());
-          
-        }
-        
-        currentNode = currentNode.getNext();
-        
-      }
-      
-      currentNode.setData(pos1Node.getData());
-      return true;
-      
-    }
-    
-  }
-
-  //shift all elements in current linked list by specified number of indexes
-  public boolean shift(int positions) {
-
-    if (Math.abs(positions) > this.getSize()) { //if specified index is invalid
-      
-      System.out.println("Error: Invalid number of positions specified in shift method of MyList_LinkedList.");
-      return false;
-      
-    } else {
-      
-      if (positions == 0 || Math.abs(positions) == this.getSize()) { //if index is valid but shifting would result in same list as current
-        
-        return true;
-        
-      } else {
-        
-        Node<T> tailNode = new Node<T>(null);
-        Node<T> currentNode = new Node<T>(null);
-        tailNode.setNext(this.getHead().getNext());
-        tailNode.setData(this.getHead().getData());
-        this.setHead(tailNode);
-        int max = 0;
-        
-        if (positions < 0) { //move to the left
-          
-          positions = Math.abs(positions);
-          max = positions;
-          
-        } else { //move to the right
-          
-          max = (this.getSize() - positions);
-          
-        }
-          
-        for (int i = 0; i < (this.getSize() - 1); i++) { //find old tail
-          
-          tailNode = tailNode.getNext();
-          
-        }
-        
-        tailNode.setNext(this.getHead());
-        currentNode.setNext(this.getHead().getNext());
-        currentNode.setData(this.getHead().getData());
-        this.setHead(currentNode);
-        
-        for (int i = 0; i < max; i++) { //find new head
-          
-          currentNode = currentNode.getNext();
-          
-        }
-        
-        this.setHead(currentNode);
-        currentNode = null;
-        currentNode = this.getHead();
-        this.setHead(currentNode);
-        
-        for (int i = 0; i < (this.getSize() - 1); i++) {
-          
-          currentNode = currentNode.getNext(); //find new tail
-          
-        }
-        
-        currentNode.setNext(null);
-      
-      return true;
-      
-      }
-    
     }
 
+    return newList;
+
   }
-  
+
+  /**
+   * Make an array out of the current linked list
+   * @return Generic array containing the elements of the current linked list
+   */
+  public T[] toArray() throws IllegalArgumentException {
+
+    // check for empty list
+    if (this.size == 0) throw new IllegalArgumentException("Linked list is empty");
+
+    T[] newArray = (T[])new Object[this.size];
+    Node<T> currNode = this.head;
+    currNode.setData((T) this.getHead().getData());
+
+    // populate new array with elements in order from list
+    for (int i = 0; i < this.size; i++) {
+
+      newArray[i] = (T) currNode.getData();
+      currNode = currNode.getNext();
+
+    }
+
+    return newArray;
+
+  }
+
+  /**
+   * Swap two nodes in the specified positions in the current linked list
+   * @param pos1 Int index of the first element to swap, should be lower of the two positions
+   * @param pos2 Int index of the second element to swap, should be higher of the two positions
+   * @return Boolean true if successful
+   */
+  public boolean swap(int pos1, int pos2) throws IllegalArgumentException, IndexOutOfBoundsException {
+
+    if (pos1 < 1 || pos1 > this.size || pos2 < 1 || pos2 > this.size) throw new IndexOutOfBoundsException("Invalid index or indices specified to swap");
+
+    if (pos2 <= pos1) throw new IllegalArgumentException("Specified first position is not lower than specified second position");
+
+    Node<T> currNode = this.head;
+    Node<T> pos1Node = new Node<T>(null);
+    Node<T> pos2Node = new Node<T>(null);
+
+    //TODO: finish reworking this part of the method
+    for (int i = 0; i < pos2; i++) { //loop until second position is reached
+
+      if (i == (pos1 - 1)) { //if first position is found
+
+        pos1Node.setData(currNode.getData());
+        pos1Node.setNext(currNode.getNext());
+
+      } else if (i == (pos2 - 1)) { //if second position is found
+
+        pos2Node.setData(currNode.getData());
+        pos2Node.setNext(currNode.getNext());
+
+      }
+      currNode = currNode.getNext();
+
+    }
+
+    currNode = this.getHead();
+    this.setHead(currNode);
+
+    for (int i = 0; i < (pos2 - 1); i++) { //swap values
+
+      if (i == (pos1 - 1)) {
+
+        currNode.setData(pos2Node.getData());
+
+      }
+
+      currNode = currNode.getNext();
+
+    }
+
+    currNode.setData(pos1Node.getData());
+    return true;
+
+  }
+
+  /**
+   * Shift all elements in the current linked list by the specified number of indices
+   * @param numPos Int number of indices to shift the current link list by
+   * @return Boolean true if successful
+   */
+  public boolean shift(int numPos) throws IllegalArgumentException {
+
+    // check for invalid numPos
+    if (Math.abs(numPos) > this.size) throw new IllegalArgumentException("Invalid number of indices to shift by specified");
+
+    // check for valid numPos that would result in the same linked list after shifting
+    if (numPos == 0 || Math.abs(numPos) == this.size) return true;
+
+    //TODO: finish reworking this part of the method
+    Node<T> tailNode = new Node<T>(null);
+    Node<T> currNode = this.head;
+    this.setHead(tailNode);
+    int max = 0;
+
+    if (numPos < 0) { //move to the left
+
+      numPos = Math.abs(numPos);
+      max = numPos;
+
+    } else { //move to the right
+
+      max = (this.size - numPos);
+
+    }
+
+    for (int i = 0; i < (this.size - 1); i++) { //find old tail
+
+      tailNode = tailNode.getNext();
+
+    }
+
+    tailNode.setNext(this.getHead());
+    currNode.setNext(this.getHead().getNext());
+    currNode.setData(this.getHead().getData());
+    this.setHead(currNode);
+
+    for (int i = 0; i < max; i++) { //find new head
+
+      currNode = currNode.getNext();
+
+    }
+
+    this.setHead(currNode);
+    currNode = null;
+    currNode = this.getHead();
+    this.setHead(currNode);
+
+    for (int i = 0; i < (this.size - 1); i++) {
+
+      currNode = currNode.getNext(); //find new tail
+
+    }
+
+    currNode.setNext(null);
+
+    return true;
+
+  }
+
 }

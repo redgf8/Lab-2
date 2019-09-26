@@ -1,4 +1,4 @@
-
+//TODO: rework this class
 public class MyList_CircularLinkedList<T> implements MyList<T> {
   
   private Node head;
@@ -165,7 +165,7 @@ public class MyList_CircularLinkedList<T> implements MyList<T> {
     for (int i = 0; i < this.getSize(); i++) {
       
       currentSong = (Song) currentNode.getData();
-      if (currentSong.getSongName().toLowerCase().equals(newSong.getSongName().toLowerCase())
+      if (currentSong.getName().toLowerCase().equals(newSong.getName().toLowerCase())
           && currentSong.getArtist().toLowerCase().equals(newSong.getArtist().toLowerCase())) {
         
         return true;

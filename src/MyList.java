@@ -1,5 +1,7 @@
-
-public interface MyList<T> { //interface for list implementations to utilize
+/**
+ * Interface for list implementations to utilize
+ */
+public interface MyList<T> {
 	
 	boolean add(int index, T o);
 	

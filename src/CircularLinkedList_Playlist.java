@@ -1,4 +1,4 @@
-
+//TODO: rework this class
 public class CircularLinkedList_Playlist {
 
   private String name = "";
@@ -151,7 +151,7 @@ public class CircularLinkedList_Playlist {
         currentSong = (Song) playlist.get(i + 1);
         if (currentSong.getArtist().toLowerCase().equals(name.toLowerCase())) {
           
-          System.out.println(currentSong.getSongName());
+          System.out.println(currentSong.getName());
           check = 1;
           
         }
